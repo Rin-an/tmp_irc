@@ -154,22 +154,22 @@ void Client:: send_recv_msg(Client &client, fd_set readfds, char *argv, Server &
 }
 
 
-void Client :: setNickname(std::string const &nick)
-{
-    this->nickname = nick;
-}
-void Client :: setUser(std::string const &user)
-{
-    this->user = user;
-}
-std::string const & Client :: getNickname(void)
-{
-    return(this->nickname);
-}
-std::string const & Client :: getUser(void)
-{
-    return(this->user);
-}
+// void Client :: setNickname(std::string const &nick)
+// {
+//     this->nickname = nick;
+// }
+// void Client :: setUser(std::string const &user)
+// {
+//     this->user = user;
+// }
+// std::string const & Client :: getNickname(void)
+// {
+//     return(this->nickname);
+// }
+// std::string const & Client :: getUser(void)
+// {
+//     return(this->user);
+// }
 int const & Client :: getSocket(void)
 {
     return(this->_socket);

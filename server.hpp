@@ -20,8 +20,8 @@ class Client
 	// std::string _host;
 	// std::string _port;
 	// std::string _password;
-	std::string nickname;
-	std::string user;
+	// std::string nickname;
+	// std::string user;
 	int _socket;
 
 public:
@@ -30,10 +30,10 @@ public:
 	std::vector<int> client_socket;
 	Client();
 	~Client();
-	void setNickname(std::string const &);
-	void setUser(std::string const &);
-	std::string const & getNickname(void);
-	std::string const & getUser(void);
+	// void setNickname(std::string const &);
+	// void setUser(std::string const &);
+	// std::string const & getNickname(void);
+	// std::string const & getUser(void);
 	int const & getSocket(void);
 	int create_socket();
 	int bind_socket_to_port(Client &, char *argv, int serversocket);
