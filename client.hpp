@@ -18,4 +18,7 @@ public:
 	void send_recv_msg(Client &client, fd_set readfds, char *argv, Server &server);
 	bool ckeck_command(std::string command);
 };
+
+int nickname_exist(Server server,std::string parametre);
+void ft_strtrim(std::string& str);
 #endif
