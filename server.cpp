@@ -1,29 +1,57 @@
 
-
 #include "server.hpp"
 
-int main(int argc, char *argv[])
+int Server:: pass = false;
+
+
+
+Server:: Server()
 {
 
-    Client client;
-    fd_set readfds;
-    Server server;
-    int serversocket = socket(AF_INET, SOCK_STREAM, 0);
+}
+Server:: ~Server()
+{
 
-    if (argc > 1)
+}
+int Server::  create_socket(Server &server)
+{
+	int opt = 1; 
+	int serversocket = socket(AF_INET, SOCK_STREAM, 0);
+	server.socket_server = serversocket;
+    if (serversocket == -1)
     {
-        serversocket = client.create_socket();
-        client.addrlen = client.bind_socket_to_port(client, argv[1], serversocket);
-        while (1)
-        {
-            readfds = client.connection_multi_client_srv(serversocket, readfds, client);
-            client.send_recv_msg(client, readfds, argv[2],server);
-            // puts ("------");
-            // for (std::vector<std::string>::iterator it = server.arr_name.begin(); it != server.arr_name.end(); it++)
-            //     std::cout <<"user : " << *it << std::endl;
-            // puts ("------");
-        }
+        std::cout << "socket creation failed" << std::endl;
+        return 1;
     }
+    if( setsockopt(serversocket, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, 
+          sizeof(opt)) < 0 )  
+    {  
+        perror("setsockopt");  
+        exit(EXIT_FAILURE);  
+    } 
+	return (serversocket);
+}
 
-    return 0;
+int  Server::bind_socket_to_port(Client &client,char *argv,int serversocket)
+{
+	int  addrlen;
+	client.hint.sin_family = AF_INET;
+    client.hint.sin_port = htons(atoi(argv));
+    inet_pton(AF_INET, "0.0.0.0", &(client.hint.sin_addr));
+    if (bind(serversocket, (sockaddr*)&(client.hint), sizeof(client.hint)) == -1)
+    {
+        std::cout << "bind failed" << std::endl;
+        return 2;
+    }
+    if(listen(serversocket, SOMAXCONN) == -1)
+    {
+        std::cout << "listen failed" << std::endl;
+        return 3;
+    }
+    addrlen = sizeof(client.hint);  
+    std::cout  << "enter your password[PASS]"<< std::endl;
+    std::cout  << "enter your nickname[NICK]"<< std::endl;
+    std::cout  << "enter your username[USER]"<< std::endl;
+    std:: cout << "Waiting for connections ..." << std::endl;
+	return (addrlen);
 }
