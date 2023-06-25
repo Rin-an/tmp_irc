@@ -1,3 +1,4 @@
+
 #include "server.hpp"
 int nickname_exist(Server server,std::string parametre)
 {

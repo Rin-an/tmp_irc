@@ -3,6 +3,7 @@
 
 #include "User.hpp"
 #include "server.hpp"
+#include <poll.h>
 
 class Server;
 class User;
@@ -14,11 +15,12 @@ public:
 	std::vector<int> client_socket;
 	Client();
 	~Client();
-	fd_set connection_multi_client_srv(int serversocket, fd_set readfds, Client &client);
-	void send_recv_msg(Client &client, fd_set readfds, char *argv, Server &server);
+	std::vector<pollfd> connection_multi_client_srv(int serversocket,std::vector<pollfd> &readfds, Client &client);
+	void send_recv_msg(Client &client, std::vector<pollfd> &readfds, char *argv, Server &server,int *index);
 	bool ckeck_command(std::string command);
 };
 
+std::string to_upper(std::string &str);
 int nickname_exist(Server server,std::string parametre);
 void ft_strtrim(std::string& str);
 #endif
