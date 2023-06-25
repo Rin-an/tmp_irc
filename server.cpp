@@ -1,7 +1,7 @@
 
 #include "server.hpp"
 
-int Server:: pass = false;
+
 
 
 

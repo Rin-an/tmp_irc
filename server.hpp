@@ -24,12 +24,11 @@ class Client;
 class Server{
 
 	public :
-		static int pass;
 		int socket_server;
-		std::vector<User *> arr_name;
-		std::map<int , std::string>  arr_nickname;
-
-
+		// static int pass;
+		// std::vector<User *> arr_name;
+		// std::map<int , std::string>  arr_nickname;
+		std::map<int,Client *> client;
 		Server();
 		~Server();
 		int  create_socket(Server &server);
