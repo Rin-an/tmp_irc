@@ -1,6 +1,7 @@
 #include "client.hpp"
 
 Client:: Client(): flag(0) {}
+
 Client :: ~Client(){}
 
 bool Client :: ckeck_command(std::string command)
@@ -15,42 +16,60 @@ int	Client::getFlag()
 	return (this->flag);
 }
 
-fd_set Client:: connection_multi_client_srv(int serversocket,fd_set readfds, Client &client)
+int Client::getPass()
 {
-	int new_socket;
-	int max_sd,sd;
-	int  activity;
-	char message[21] = "welcome to client \r\n";  
-	FD_ZERO(&readfds);  
-	FD_SET(serversocket, &readfds);  
-	max_sd = serversocket;
-	for (std::vector<int>::iterator it  = client.client_socket.begin(); it < client.client_socket.end(); it++)  
-	{  
-		sd = *it;
-		if(sd > 0)  
-			FD_SET( sd , &readfds);  
-		if(sd > max_sd)  
-			max_sd = sd;  
-	}
-	activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL);
-	if ((activity < 0) && (errno!=EINTR))   
-		std::cout << "select error\n";
-	if (FD_ISSET(serversocket, &readfds))  
-	{  
-		if (( new_socket = accept(serversocket, 
-						(struct sockaddr *)&client.hint, (socklen_t*)&(client.addrlen)))<0)  
-		{  
-			perror("accept");  
-			exit(EXIT_FAILURE);  
-		}
-		std::cout << "New connection , socket fd is  "<< new_socket <<", ip is : " << inet_ntoa(client.hint.sin_addr) << ", port : " <<  ntohs(hint.sin_port) << "\n";
-		size_t j;
-		if( (j = send(new_socket, message, strlen(message), 0)) != strlen(message) )
-			perror("send");
-		std::cout << "Welcome message sent successfully\n";
-		client.client_socket.push_back(new_socket);  
-	}
-	return (readfds);
+    return (this->pass);
+}
+
+std::string Client::getUserName(void)
+{
+    return (this->user_name);
+}
+
+std::string Client::getNickName(void)
+{
+    return (this->nickname);
+}
+
+void Client::setPass(int pass)
+{
+    this->pass = pass;
+}
+
+void Client::setUserName(std::string user_name)
+{
+    this->user_name = user_name;
+}
+
+void Client::setNickName(std::string nick_name)
+{
+    this->nickname = nick_name;
+}
+
+std::vector<pollfd> Client::connection_multi_client_srv(int serversocket, std::vector<pollfd> &readfds, Client &client, Server &server)
+{
+    int new_socket;
+    char message[21] = "welcome to client \r\n";
+    if ((new_socket = accept(serversocket,
+                             (struct sockaddr *)&client.hint, (socklen_t *)&(client.addrlen))) < 0)
+    {
+        perror("accept");
+        exit(EXIT_FAILURE);
+    }
+    std::cout << "New connection , socket fd is  " << new_socket << ", ip is : " << inet_ntoa(client.hint.sin_addr) << ", port : " << ntohs(client.hint.sin_port) << "\n";
+    size_t k;
+    if ((k = send(new_socket, message, strlen(message), 0)) != strlen(message))
+        perror("send");
+    std::cout << "Welcome message sent successfully\n";
+    pollfd p;
+    p.fd = new_socket;
+    p.events = POLLIN;
+    readfds.push_back(p);
+    server.client[p.fd] = &client;
+    server.client[p.fd]->setPass(0);
+    server.client[p.fd]->setNickName("");
+    server.client[p.fd]->setUserName("");
+    return (readfds);
 }
 
 std::string to_upper(std::string &str)

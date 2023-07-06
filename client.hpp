@@ -17,8 +17,8 @@ class Client
 		Client();
 		~Client();
 		int	getFlag();
-		fd_set connection_multi_client_srv(int serversocket, fd_set readfds, Client &client);
-		void send_recv_msg(Client &client, fd_set readfds, char *argv, Server &server);
+		std::vector<pollfd> connection_multi_client_srv(int serversocket, std::vector<pollfd> &readfds, Client &client,Server &server);
+		void send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index);
 		bool	ckeck_command(std::string command);
 		void 	parse_ch_cmd(Client&, Server&, std::string, std::string);//), fd_set);
 		int		channel_command(std::string&);

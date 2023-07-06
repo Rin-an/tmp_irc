@@ -18,13 +18,13 @@ class Channel{
         Channel();
         Channel(const std::string&);
         ~Channel();
-        const std::string&  getName(void) const;
-        const std:string&   getTopic(void) const;
-        const std::string&  getMode(void) const;
-        void                setName(std::string&);
-        void                setTopic(std::string&);
-        void                setMode(std::string&);
-        void                setKey(std::string&);
-        int                 topic_cmd(std::string);
+        const std::string&	getName(void) const;
+        const std::string&	getTopic(void) const;
+        const std::string&	getMode(void) const;
+        void				setName(std::string&);
+        void				setTopic(std::string&);
+        void				setMode(std::string&);
+        void				setKey(std::string&);
+        int					topic_cmd(std::string);
 };
 #endif

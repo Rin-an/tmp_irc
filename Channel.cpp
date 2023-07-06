@@ -58,3 +58,24 @@ int Channel::topic_cmd(std:string param)
     }
     std::getline(str, t);
 }
+
+void    Client::parse_ch_cmd(Client &c, Server& s, std::string command, std::string parametre)//, fd_set readfds)
+{
+/*  std ::stringstream str(buffer);
+    std::string command;
+    std::string parametre;
+    getline(str, command,' ');
+    command = to_upper(command);*/
+    (void)c;
+    (void)s;
+    std::cout << "COMMAND: " << command << "$" << std::endl;
+    if (command == "JOIN" || command == "MODE" || command == "INVITE" \
+            || command == "TOPIC" || command == "USER" || command == "NICK")
+        //  exec_ch_command(command, str, s);
+        std::cout << "cmd: " << command << " ,parametres " << parametre << std::endl;
+    else
+    {
+        std::cout << "No such command" << std::endl;
+        return;
+    }
+}
