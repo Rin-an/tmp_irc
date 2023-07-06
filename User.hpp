@@ -3,6 +3,7 @@
 #include "client.hpp"
 #include "server.hpp"
 
+
 class User{
 	std::string user;
 	std::string  mode; 
