@@ -30,9 +30,9 @@ class Client
 		std::vector<pollfd> connection_multi_client_srv(int serversocket, std::vector<pollfd> &readfds, Client &client,Server &server);
 		void send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index);
 		bool	ckeck_command(std::string command);
-		void 	parse_ch_cmd(Client&, Server&, std::string, std::string);//), fd_set);
+		void 	parse_ch_cmd(std::string, std::string);//), std::vector<pollfd>&);
 		int		channel_command(std::string&);
-		void	exec_ch_command(std::string&, std::stringstream&, Server&);
+		void	exec_ch_command(std::string&, std::stringstream&);
 		void	join_cmd(Server&);
 };
 std::string to_upper(std::string &str);

@@ -3,8 +3,8 @@ CC = c++
 
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRC = server.cpp create_socket.cpp client.cpp User.cpp main.cpp
-INCLUDE = server.hpp client.hpp User.hpp
+SRC = server.cpp create_socket.cpp client.cpp User.cpp commands.cpp join_cmd.cpp main1.cpp
+INCLUDE = server.hpp client.hpp User.hpp commands.hpp
 OBJECTS = $(SRC:.cpp=.o)
 
 all: $(NAME)
