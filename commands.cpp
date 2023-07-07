@@ -42,9 +42,9 @@ void    user_cmd(std::string param, std::deque<std::string>& u)
 
 	if (param.empty())
 	{
-		std::cout << "Enter a username." << std::endl;
+		std::cout << "USER :Not enough parameters" << std::endl;
 		return ;
-	}	
+	}
 	u.push_back(param);
 	std::cout << "USER command" << std::endl;
 }

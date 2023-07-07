@@ -83,7 +83,7 @@ void    parse_ch_cmd(std::string cmdline, std::deque<std::string> &users)
 	}
 	else
 	{
-		std::cout << "No such command" << std::endl;
+		std::cout << "<" << cmd << ">" << " :Unknown command" << std::endl;
 		return;
 	}
 }

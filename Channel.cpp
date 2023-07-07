@@ -21,7 +21,7 @@ const std::string&  Channel::getTopic(void) const
 
 const std::string&  Channel::getMode(void) const
 {
-    return (this->mode;
+    return (this->mode);
 }
 
 void    Channel::setName(std::string& n)
@@ -44,7 +44,7 @@ void    Channel::setKey(std::string& k)
     this->key = k;
 }
 
-int Channel::topic_cmd(std:string param)
+/*int Channel::topic_cmd(std:string param)
 {
     (this->mode).find("t") == string::npos ? return (ERR_NOCHANMODES) : continue;
     std::stringstream   str(param);
@@ -57,4 +57,4 @@ int Channel::topic_cmd(std:string param)
         return ;
     }
     std::getline(str, t);
-}
+}*/
