@@ -1,10 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/07 15:08:58 by zel-hach          #+#    #+#             */
+/*   Updated: 2023/07/07 15:11:21 by zel-hach         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "server.hpp"
-
-
-
-
-
 Server:: Server()
 {
 
@@ -12,6 +19,16 @@ Server:: Server()
 Server:: ~Server()
 {
 
+}
+Server:: Server(Server &copy)
+{
+    *this = copy;
+}
+Server &Server:: operator=(Server &cpy)
+{
+    this->socket_server = cpy.socket_server;
+    this->client = cpy.client;
+    return(*this);
 }
 int Server::  create_socket(Server &server)
 {

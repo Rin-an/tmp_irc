@@ -1,8 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/07 15:11:52 by zel-hach          #+#    #+#             */
+/*   Updated: 2023/07/07 15:11:52 by zel-hach         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "client.hpp"
 
 Client::Client() {}
 Client ::~Client() {}
-
+Client:: Client(Client &copy)
+{
+    *this = copy;
+}
+Client &Client:: operator=(Client &cpy)
+{
+    this->pass = cpy.pass;
+    this->user_name = cpy.user_name;
+    this->nickname = cpy.nickname;
+    return(*this);
+}
 int Client::getPass()
 {
     return (this->pass);
@@ -28,17 +50,17 @@ void Client::setNickName(std::string nick_name)
     this->nickname = nick_name;
 }
 
-std::vector<pollfd> Client::connection_multi_client_srv(int serversocket, std::vector<pollfd> &readfds, Client &client, Server &server)
+std::vector<pollfd> Client::connection_multi_client_srv(int serversocket, std::vector<pollfd> &readfds, Server &server)
 {
     int new_socket;
     char message[21] = "welcome to client \r\n";
     if ((new_socket = accept(serversocket,
-                             (struct sockaddr *)&client.hint, (socklen_t *)&(client.addrlen))) < 0)
+                             (struct sockaddr *)&this->hint, (socklen_t *)&(this->addrlen))) < 0)
     {
         perror("accept");
         exit(EXIT_FAILURE);
     }
-    std::cout << "New connection , socket fd is  " << new_socket << ", ip is : " << inet_ntoa(client.hint.sin_addr) << ", port : " << ntohs(client.hint.sin_port) << "\n";
+    std::cout << "New connection , socket fd is  " << new_socket << ", ip is : " << inet_ntoa(this->hint.sin_addr) << ", port : " << ntohs(this->hint.sin_port) << "\n";
     size_t k;
     if ((k = send(new_socket, message, strlen(message), 0)) != strlen(message))
         perror("send");
@@ -47,14 +69,11 @@ std::vector<pollfd> Client::connection_multi_client_srv(int serversocket, std::v
     p.fd = new_socket;
     p.events = POLLIN;
     readfds.push_back(p);
-    server.client[p.fd] = &client;
-    server.client[p.fd]->setPass(0);
-    server.client[p.fd]->setNickName("");
-    server.client[p.fd]->setUserName("");
+    server.client[p.fd] = *this;
     return (readfds);
 }
 
-void Client::send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index)
+void Client::send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index, Server &server)
 {
     char buffer[1024];
     User user;
@@ -78,38 +97,22 @@ void Client::send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index)
         getline(str, parametre);
         ft_strtrim(parametre);
         command = to_upper(command);
-        std::cout << this->getPass() << std::endl;
+
         if ((command == "PASS" && parametre == argv))
-        {
-            std::cout << buffer << std::endl;
             this->setPass(1);
-            std::cout << this->pass << std::endl;
-        }
-        if (command == "NICK" && this->getPass() == 1 && parametre.length() != 0)
+        if (command == "NICK" && this->getPass() == 1 && parametre.length() != 0 && nickname_exist(server, parametre) == 0)
         {
             this->nickname = parametre;
-            std::cout << nickname << std::endl;
+            this->i++;
         }
         if (command == "USER" && this->getPass() == 1 && parametre.length() != 0)
         {
             this->user_name = parametre;
-            std::cout << user_name << std::endl;
-            // std::string us;
-            // std ::stringstream str(parametre);
-            // getline(str, us, ' ');
-            // user.setUser(us);
-            // getline(str, us, ' ');
-            // user.setMode(us);
-            // getline(str, us, ' ');
-            // user.setUnused(us);
-            // getline(str, us);
-            // user.setRealname(us);
-            // server.arr_name.push_back(&user);
+            this->len++;
         }
-        if(!this->user_name.empty() && !this->nickname.empty())
-        {
-            std::cout << this->user_name << " " << this->nickname << std::endl;
+        if (!this->user_name.empty() && !this->nickname.empty() && server.client.size() == (size_t)this->i && server.client.size() == (size_t)this->len)
             std::cout << "now you are connecte with nickname : " << this->nickname << std::endl;
-        }
+        for (std::map<int, Client>::iterator it = server.client.begin(); it != server.client.end(); it++)
+            std::cout << it->first << " nickname: " << it->second.getNickName() << std::endl;
     }
 }
