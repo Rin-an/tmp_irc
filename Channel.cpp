@@ -1,10 +1,12 @@
 #include "Channel.hpp"
 
-Channel::Channel(){}
-
-Channel::Channel(const std::string& n):name(n), key("pass"), topic(""), mode("k")
+Channel::Channel()
 {
+	usernum = 0;
+}
 
+Channel::Channel(const std::string& n):name(n), key("pass"), limit(1), usernum(0), topic(""), mode("lki")
+{
 }
 
 Channel::~Channel() {}
@@ -29,6 +31,17 @@ const std::string&  Channel::getKey(void) const
     return (this->key);
 }
 
+int  Channel::getLimit(void) const
+{
+    return (this->limit);
+}
+
+int  Channel::getUsernum(void) const
+{
+    return (this->usernum);
+}
+
+
 void    Channel::setName(std::string& n)
 {
     this->name = n;
@@ -47,6 +60,16 @@ void    Channel::setMode(std::string& m)
 void    Channel::setKey(std::string& k)
 {
     this->key = k;
+}
+
+void    Channel::setLimit(int l)
+{
+    this->limit = l;
+}
+
+void    Channel::setUsernum(void)
+{
+    (this->usernum)++;
 }
 
 /*int Channel::topic_cmd(std:string param)

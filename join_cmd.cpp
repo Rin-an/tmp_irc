@@ -58,12 +58,14 @@ int	find_ch(std::string ch)
 
 int	check_modes(int i)
 {
-	size_t pos = (g_chs[i].getMode()).find_first_of(CHANNEL_MODS);
+	Channel ch = g_chs[i];
+	size_t pos = (ch.getMode()).find_first_of(CHANNEL_MODS);
 	if (pos != std::string::npos)
 	{
-		switch ((g_chs[i].getMode())[pos])
+		switch ((ch.getMode())[pos])
 		{
 			case 'i':
+				//if (!g_chs[i].empty() && (find(g_chs
 				//ERR_INVITEONLYCHAN 473
 				throw (g_chs[i].getName() + " :Cannot join channel (+i)");
 			case 'l':
@@ -84,7 +86,8 @@ void	add_user(std::string ch, std::vector<std::string>& key_list, int i, std::de
 		if (k && key_list[i] != g_chs[ch_i].getKey())
 			//ERR_BADCHANNELKEY 475
 			throw (ch + " :Cannot join channel (+k)");
-		g_chs[ch_i].users.push_back(*u);	
+		g_chs[ch_i].users.push_back(*u);
+		g_chs[ch_i].setUsernum();
 	}
 	catch (const char* str)
 	{
@@ -102,6 +105,7 @@ void	create_ch(std::string ch, std::deque<std::string>::iterator u)
 
 	n_ch.users.push_back(*u);
 	n_ch.op.push_back(*u);
+	n_ch.setUsernum();
 	g_chs.push_back(n_ch);
 }
 
@@ -139,7 +143,7 @@ void	join_cmd(std::string param, std::deque<std::string>::iterator u)
 
 	//std::cout << "JOIN COMMAND" << std::endl;
 	split_param(param, ch_list, key_list);
-	if (ch_list.empty())
+	if (ch_list.empty() || (ch_list.size() == 1 && ch_list[0].empty()))
 	{
 		//ERR_NEEDMOREPARAMS 461
 		std::cout << "JOIN :Not enough parameters" << std::endl;
