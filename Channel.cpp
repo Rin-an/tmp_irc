@@ -2,7 +2,7 @@
 
 Channel::Channel(){}
 
-Channel::Channel(const std::string& n):name(n), topic(""), mode("")
+Channel::Channel(const std::string& n):name(n), key("pass"), topic(""), mode("k")
 {
 
 }

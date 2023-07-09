@@ -10,7 +10,7 @@ void	split_param(std::string param, std::vector<std::string> &ch_list, std::vect
 	std::string		chs;
 	std::string		keys;
 
-	std::cout << ss.str() << std::endl;
+//	std::cout << ss.str() << std::endl;
 	getline(ss, chs, ' ');
 	getline(ss, keys);
 	std::stringstream	ss_ch(chs);
@@ -78,13 +78,9 @@ int	check_modes(int i)
 
 void	add_user(std::string ch, std::vector<std::string>& key_list, int i, std::deque<std::string>::iterator u)
 {
-	(void) u;
-	(void) key_list;
-	(void) i;
 	int	ch_i = find_ch(ch);
 	try{
 		int k = check_modes(ch_i);
-		std::cout << "Key mode = " << k << std::endl;
 		if (k && key_list[i] != g_chs[ch_i].getKey())
 			//ERR_BADCHANNELKEY 475
 			throw (ch + " :Cannot join channel (+k)");
@@ -100,12 +96,10 @@ void	add_user(std::string ch, std::vector<std::string>& key_list, int i, std::de
 	}
 }
 
-void	create_ch(std::string ch, std::vector<std::string>& key_list, int i, std::deque<std::string>::iterator u)
+void	create_ch(std::string ch, std::deque<std::string>::iterator u)
 {
 	Channel	n_ch(ch);
 
-	if (!key_list.empty())
-		n_ch.setKey(key_list[i]);
 	n_ch.users.push_back(*u);
 	n_ch.op.push_back(*u);
 	g_chs.push_back(n_ch);
@@ -119,7 +113,7 @@ int	join_ch(std::vector<std::string>& ch_list, std::vector<std::string>& key_lis
 			if (!g_chs.empty() && find_ch(ch_list[i]) >= 0)
 				add_user(ch_list[i], key_list, i, u);
 			else
-				create_ch(ch_list[i], key_list, i, u);
+				create_ch(ch_list[i], u);
 		}
 		catch (std::exception& e)
 		{
