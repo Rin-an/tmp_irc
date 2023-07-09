@@ -4,8 +4,6 @@ extern std::deque<Channel> g_chs;
 
 void	split_param(std::string param, std::vector<std::string> &ch_list, std::vector<std::string> &key_list)
 {
-	(void) ch_list;
-	(void) key_list;
 	std::stringstream	ss(param);
 	std::string		chs;
 	std::string		keys;
@@ -36,7 +34,7 @@ int	valid_ch(std::vector<std::string>& ch_list)
 	for (std::vector<std::string>::iterator it = ch_list.begin(); it != ch_list.end(); it++)
 	{
 		std::string	ch = *it;
-		if (ch.find_first_of(CHANNEL_CHARS) != 0 || ch.size() > 50)
+		if ((ch.find_first_of(CHANNEL_CHARS) != 0 || ch.size() > 50) && *it != "0")
 		{
 			//ERR_NOSUCHCHANNEL 403
 			std::cout << ch << " :No such channel" << std::endl;
@@ -56,38 +54,36 @@ int	find_ch(std::string ch)
 	return (-1);
 }
 
-int	check_modes(int i)
+int	check_modes(int i, std::deque<std::string>::iterator u)
 {
 	Channel ch = g_chs[i];
-	size_t pos = (ch.getMode()).find_first_of(CHANNEL_MODS);
-	if (pos != std::string::npos)
-	{
-		switch ((ch.getMode())[pos])
-		{
-			case 'i':
-				//if (!g_chs[i].empty() && (find(g_chs
-				//ERR_INVITEONLYCHAN 473
-				throw (g_chs[i].getName() + " :Cannot join channel (+i)");
-			case 'l':
-				//ERR_CHANNELISFULL 471
-				throw (g_chs[i].getName() + " :Cannot join channel (+l)");
-			case 'k':
-				return 1;
-		}
-	}
+
+	if ((ch.getMode()).find('i') != std::string::npos && find(ch.invite.begin(), ch.invite.end(), *u) == ch.invite.end())
+		//ERR_INVITEONLYCHAN 473
+		throw (ch.getName() + " :Cannot join channel (+i)");
+	if ((ch.getMode()).find('l') != std::string::npos && ch.getUsernum() == ch.getLimit()) 
+		//ERR_CHANNELISFULL 471
+		throw (ch.getName() + " :Cannot join channel (+l)");
+	if ((ch.getMode()).find('k') != std::string::npos)
+		return (1);
 	return (0);
 }
 
 void	add_user(std::string ch, std::vector<std::string>& key_list, int i, std::deque<std::string>::iterator u)
 {
 	int	ch_i = find_ch(ch);
+
 	try{
-		int k = check_modes(ch_i);
-		if (k && key_list[i] != g_chs[ch_i].getKey())
-			//ERR_BADCHANNELKEY 475
-			throw (ch + " :Cannot join channel (+k)");
+		if (find(g_chs[ch_i].users.begin(), g_chs[ch_i].users.end(), *u) != g_chs[ch_i].users.end())
+			return ;
+		int k = check_modes(ch_i, u);
+		std::deque<std::string>	invite = g_chs[ch_i].invite;
+		if (find(invite.begin(), invite.end(), *u) == invite.end())
+			if (k && key_list[i] != g_chs[ch_i].getKey())
+				//ERR_BADCHANNELKEY 475
+				throw (ch + " :Cannot join channel (+k)");
 		g_chs[ch_i].users.push_back(*u);
-		g_chs[ch_i].setUsernum();
+		g_chs[ch_i].incUsernum();
 	}
 	catch (const char* str)
 	{
@@ -105,8 +101,26 @@ void	create_ch(std::string ch, std::deque<std::string>::iterator u)
 
 	n_ch.users.push_back(*u);
 	n_ch.op.push_back(*u);
-	n_ch.setUsernum();
+	n_ch.incUsernum();
 	g_chs.push_back(n_ch);
+}
+
+void	quit_all(std::deque<std::string>::iterator u)
+{
+	for (std::deque<Channel>::iterator it = g_chs.begin(); it != g_chs.end(); it++)
+	{
+		std::deque<std::string>&	users = (*it).users;
+		for (std::deque<std::string>::iterator it2 = users.begin(); it2 != users.end(); it2++)
+		{
+			if (*it2 == *u)
+			{
+				std::cout << "Did it get here?" << std::endl;
+				users.erase(it2);
+				(*it).decUsernum();
+			}
+		}
+		std::cout << "Channel " << (*it).getName() << " has " << (*it).getUsernum() << "users." << std::endl;
+	}
 }
 
 int	join_ch(std::vector<std::string>& ch_list, std::vector<std::string>& key_list, std::deque<std::string>::iterator u)
@@ -114,7 +128,9 @@ int	join_ch(std::vector<std::string>& ch_list, std::vector<std::string>& key_lis
 	for (unsigned long i = 0; i < ch_list.size(); i++)
 	{
 		try{
-			if (!g_chs.empty() && find_ch(ch_list[i]) >= 0)
+			if (ch_list[i] == "0")
+				quit_all(u);
+			else if (!g_chs.empty() && find_ch(ch_list[i]) >= 0)
 				add_user(ch_list[i], key_list, i, u);
 			else
 				create_ch(ch_list[i], u);
@@ -137,7 +153,6 @@ int	join_ch(std::vector<std::string>& ch_list, std::vector<std::string>& key_lis
 
 void	join_cmd(std::string param, std::deque<std::string>::iterator u)
 {
-	(void) u;
 	std::vector<std::string>	ch_list;
 	std::vector<std::string>	key_list;
 

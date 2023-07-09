@@ -34,7 +34,8 @@ class Channel{
 		void				setMode(std::string&);
 		void				setKey(std::string&);
 		void				setLimit(int);
-		void				setUsernum(void);
+		void				incUsernum(void);
+		void				decUsernum(void);
 //		void				topic_cmd(std::string, std::deque<std::string>, std::deque<Channel*>);
 //		void				mode_cmd(std::string, std::deque<std::string>, std::deque<Channel*>);
 };

@@ -5,7 +5,7 @@ Channel::Channel()
 	usernum = 0;
 }
 
-Channel::Channel(const std::string& n):name(n), key("pass"), limit(1), usernum(0), topic(""), mode("lki")
+Channel::Channel(const std::string& n):name(n), usernum(0), topic(""), mode("")
 {
 }
 
@@ -67,9 +67,14 @@ void    Channel::setLimit(int l)
     this->limit = l;
 }
 
-void    Channel::setUsernum(void)
+void    Channel::incUsernum(void)
 {
     (this->usernum)++;
+}
+
+void    Channel::decUsernum(void)
+{
+    (this->usernum)--;
 }
 
 /*int Channel::topic_cmd(std:string param)
