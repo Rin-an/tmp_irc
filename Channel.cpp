@@ -24,6 +24,11 @@ const std::string&  Channel::getMode(void) const
     return (this->mode);
 }
 
+const std::string&  Channel::getKey(void) const
+{
+    return (this->key);
+}
+
 void    Channel::setName(std::string& n)
 {
     this->name = n;

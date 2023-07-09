@@ -23,6 +23,7 @@ class Channel{
 		const std::string&	getName(void) const;
 		const std::string&	getTopic(void) const;
 		const std::string&	getMode(void) const;
+		const std::string&	getKey(void) const;
 		void				setName(std::string&);
 		void				setTopic(std::string&);
 		void				setMode(std::string&);
@@ -30,4 +31,5 @@ class Channel{
 //		void				topic_cmd(std::string, std::deque<std::string>, std::deque<Channel*>);
 //		void				mode_cmd(std::string, std::deque<std::string>, std::deque<Channel*>);
 };
+
 #endif

@@ -1,6 +1,6 @@
 #include "commands.hpp"
 
-std::deque<Channel*>	g_chs;
+std::deque<Channel>	g_chs;
 
 int	f_index(std::string cmd)
 {
@@ -83,7 +83,7 @@ void    parse_ch_cmd(std::string cmdline, std::deque<std::string> &users)
 	}
 	else
 	{
-		std::cout << "<" << cmd << ">" << " :Unknown command" << std::endl;
+		std::cout << cmd << " :Unknown command" << std::endl;
 		return;
 	}
 }
