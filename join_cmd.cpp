@@ -45,10 +45,12 @@ int	valid_ch(std::vector<std::string>& ch_list)
 
 int	find_ch(std::string ch)
 {
-	for(unsigned long i = 0; i < g_chs.size(); i++)
+	for (unsigned long i = 0; i < g_chs.size(); i++)
 	{
 		if (g_chs[i].getName() == ch)
+		{
 			return (i);
+		}
 	}
 	return (-1);
 }
