@@ -57,10 +57,10 @@ void    mode_cmd(std::string param, std::deque<std::string>::iterator u)
 	std::cout << "MODE command" << std::endl;
 }
 
-void    kick_cmd(std::string param, std::deque<std::string>::iterator u)
+/*void    kick_cmd(std::string param, std::deque<std::string>::iterator u)
 {
 	(void) param;
 	(void) u;
 
 	std::cout << "KICK command" << std::endl;
-}
+}*/

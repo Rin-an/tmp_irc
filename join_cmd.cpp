@@ -8,7 +8,6 @@ void	split_param(std::string param, std::vector<std::string> &ch_list, std::vect
 	std::string		chs;
 	std::string		keys;
 
-//	std::cout << ss.str() << std::endl;
 	getline(ss, chs, ' ');
 	getline(ss, keys);
 	std::stringstream	ss_ch(chs);
@@ -114,12 +113,10 @@ void	quit_all(std::deque<std::string>::iterator u)
 		{
 			if (*it2 == *u)
 			{
-				std::cout << "Did it get here?" << std::endl;
 				users.erase(it2);
 				(*it).decUsernum();
 			}
 		}
-		std::cout << "Channel " << (*it).getName() << " has " << (*it).getUsernum() << "users." << std::endl;
 	}
 }
 
@@ -158,7 +155,7 @@ void	join_cmd(std::string param, std::deque<std::string>::iterator u)
 
 	//std::cout << "JOIN COMMAND" << std::endl;
 	split_param(param, ch_list, key_list);
-	if (ch_list.empty() || (ch_list.size() == 1 && ch_list[0].empty()))
+	if (ch_list[0].empty())
 	{
 		//ERR_NEEDMOREPARAMS 461
 		std::cout << "JOIN :Not enough parameters" << std::endl;
