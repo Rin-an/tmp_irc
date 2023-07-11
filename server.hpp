@@ -15,12 +15,12 @@
 #include <vector>
 #include "client.hpp"
 #include "User.hpp"
-
+#include "Channel.hpp"
 
 class Server;
 class User;
 class Client;
-
+class Channel;
 class Server{
 
 	public :

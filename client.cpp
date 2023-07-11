@@ -6,11 +6,12 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:11:52 by zel-hach          #+#    #+#             */
-/*   Updated: 2023/07/07 15:11:52 by zel-hach         ###   ########.fr       */
+/*   Updated: 2023/07/09 16:00:38 by zel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.hpp"
+
 
 Client::Client() {}
 Client ::~Client() {}
@@ -25,33 +26,40 @@ Client &Client:: operator=(Client &cpy)
     this->nickname = cpy.nickname;
     return(*this);
 }
+
 int Client::getPass()
 {
-    return (this->pass);
+	return (this->pass);
 }
+
 std::string Client::getUserName(void)
 {
-    return (this->user_name);
+	return (this->user_name);
 }
+
 std::string Client::getNickName(void)
 {
-    return (this->nickname);
+	return (this->nickname);
 }
+
 void Client::setPass(int pass)
 {
-    this->pass = pass;
+	this->pass = pass;
 }
+
 void Client::setUserName(std::string user_name)
 {
-    this->user_name = user_name;
+	this->user_name = user_name;
 }
+
 void Client::setNickName(std::string nick_name)
 {
-    this->nickname = nick_name;
+	this->nickname = nick_name;
 }
 
 std::vector<pollfd> Client::connection_multi_client_srv(int serversocket, std::vector<pollfd> &readfds, Server &server)
 {
+
     int new_socket;
     char message[21] = "welcome to client \r\n";
     if ((new_socket = accept(serversocket,
@@ -75,6 +83,7 @@ std::vector<pollfd> Client::connection_multi_client_srv(int serversocket, std::v
 
 void Client::send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index, Server &server)
 {
+
     char buffer[1024];
     User user;
     memset(buffer, 0, sizeof(buffer));
@@ -115,4 +124,5 @@ void Client::send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index,
         for (std::map<int, Client>::iterator it = server.client.begin(); it != server.client.end(); it++)
             std::cout << it->first << " nickname: " << it->second.getNickName() << std::endl;
     }
+
 }

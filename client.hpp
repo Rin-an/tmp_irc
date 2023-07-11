@@ -6,7 +6,7 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:12:02 by zel-hach          #+#    #+#             */
-/*   Updated: 2023/07/07 15:12:02 by zel-hach         ###   ########.fr       */
+/*   Updated: 2023/07/07 16:41:38 by zel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ class Server;
 class User;
 class Client
 {
+	int	flag;
 	int pass;
 	std::string user_name;
 	std::string nickname;
@@ -53,4 +54,5 @@ public:
 std::string to_upper(std::string &str);
 int nickname_exist(Server server, std::string parametre);
 void ft_strtrim(std::string &str);
+
 #endif
