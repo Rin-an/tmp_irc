@@ -2,6 +2,7 @@
 
 extern   std::deque<Channel>	g_chs;
 
+
 void    split_param(std::string param, std::vector<std::string> &ch_list, std::vector<std::string> &user_list, std::string& cmt)
 {
 	std::stringstream   ss(param);
