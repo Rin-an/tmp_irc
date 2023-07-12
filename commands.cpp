@@ -1,5 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   commands.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssadiki <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/12 13:50:12 by ssadiki           #+#    #+#             */
+/*   Updated: 2023/07/12 19:57:58 by ssadiki          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "commands.hpp"
 
+void    exec_ch_command(std::string& cmd, std::string& param, Client& cl, Server& server)
+{
+    void    (*cmdsf[]) (std::string, Client&, Server&) = {&join_cmd, &mode_cmd, &invite_cmd, &topic_cmd, &kick_cmd};
+
+    switch (f_index(cmd))
+    {
+        case 0:
+            cmdsf[0](param, cl, serv);
+            break;
+        case 1:
+            cmdsf[1](param, cl, serv);
+            break;
+        case 2:
+            cmdsf[2](param, cl, serv);
+            break;
+        case 3:
+            cmdsf[3](param, cl, serv);
+            break;
+        case 4:
+            cmdsf[4](param, cl, serv);
+            break;
+        default:
+            std::cout << "how?" << std::endl;
+    }
+}
 void	topic_cmd(std::string param, std::deque<std::string>::iterator u)
 {
 	/*(this->mode).find("t") == string::npos ? return (ERR_NOCHANMODES) : continue;

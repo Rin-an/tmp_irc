@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <sstream>
 #include <map>
+#include <deque>
 #include <vector>
 #include "client.hpp"
 #include "User.hpp"
@@ -26,6 +27,7 @@ class Server{
 	public :
 		int socket_server;
 		std::map<int,Client > client;
+		//std::deque<Channel>	g_chs;
 		Server();
 		~Server();
 		Server(Server &);

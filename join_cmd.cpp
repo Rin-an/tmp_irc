@@ -1,21 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   join_cmd.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssadiki <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/12 13:49:29 by ssadiki           #+#    #+#             */
+/*   Updated: 2023/07/12 13:49:31 by ssadiki          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "commands.hpp"
 
 extern std::deque<Channel> g_chs;
 
-void	split_param(std::string param, std::vector<std::string> &ch_list, std::vector<std::string> &key_list)
-{
-	std::stringstream	ss(param);
-	std::string		chs;
-	std::string		keys;
+void	split_param(std::string param, std::vector<std::string> &ch_list,
+		std::vector<std::string> &key_list) { std::stringstream	ss(param);
+	std::string		chs; std::string		keys;
 
-	getline(ss, chs, ' ');
-	getline(ss, keys);
-	std::stringstream	ss_ch(chs);
+	getline(ss, chs, ' '); getline(ss, keys); std::stringstream	ss_ch(chs);
 	std::stringstream	ss_key(keys);
 
-	while(!ss_ch.eof())
-	{
-		std::string	ch;
+	while(!ss_ch.eof()) { std::string	ch;
 		getline(ss_ch, ch, ',');
 		ch_list.push_back(ch);
 	}

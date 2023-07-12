@@ -6,7 +6,7 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:12:09 by zel-hach          #+#    #+#             */
-/*   Updated: 2023/07/07 15:12:09 by zel-hach         ###   ########.fr       */
+/*   Updated: 2023/07/12 15:33:27 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
+
+std::deque<Channel> g_chs;
 
 int main(int argc, char *argv[])
 {

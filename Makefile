@@ -6,7 +6,7 @@
 #    By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 15:12:06 by zel-hach          #+#    #+#              #
-#    Updated: 2023/07/07 15:12:06 by zel-hach         ###   ########.fr        #
+#    Updated: 2023/07/12 15:29:31 by ssadiki          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC = c++
 
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRC = server.cpp create_socket.cpp client.cpp User.cpp commands.cpp join_cmd.cpp kick_cmd.cpp main1.cpp Channel.cpp
+SRC = server.cpp create_socket.cpp client.cpp User.cpp commands.cpp join_cmd.cpp kick_cmd.cpp main.cpp Channel.cpp
 INCLUDE = server.hpp client.hpp User.hpp commands.hpp Channel.hpp
 OBJECTS = $(SRC:.cpp=.o)
 
