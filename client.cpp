@@ -6,7 +6,7 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:11:52 by zel-hach          #+#    #+#             */
-/*   Updated: 2023/07/12 12:29:56 by zel-hach         ###   ########.fr       */
+/*   Updated: 2023/07/12 13:45:32 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ void Client::send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index,
         if (this->i == 1 && this->len == 1)
         {
             // this->i = 2;
-            if (command == "NICK" && this->getPass() == 1 && nickname_exist(server, parametre) == 0)
+           /* if (command == "NICK" && this->getPass() == 1 && nickname_exist(server, parametre) == 0)
             {
                 if (parametre.length() == 0)
                     std::cout << "ERR_NONICKNAMEGIVEN\n";
@@ -187,7 +187,7 @@ void Client::send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index,
                     std::cout << "nickname: " << this->nickname << std::endl;
                     this->i++;
                 }
-            }
+            }*/
             std::cout << "now you are connecte with nickname : " << this->nickname << std::endl;
         }
     }
