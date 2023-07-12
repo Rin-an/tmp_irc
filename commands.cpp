@@ -6,11 +6,23 @@
 /*   By: ssadiki <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 13:50:12 by ssadiki           #+#    #+#             */
-/*   Updated: 2023/07/12 19:57:58 by ssadiki          ###   ########.fr       */
+/*   Updated: 2023/07/12 20:03:23 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.hpp"
+
+int f_index(std::string cmd)
+{
+    int i = -1;
+    std::string cmds[] = {"JOIN", "MODE", "INVITE", "TOPIC", "KICK"};
+    while (++i <= 4)
+    {
+        if (cmd == cmds[i])
+            return (i);
+    }
+    return (-1);
+}
 
 void    exec_ch_command(std::string& cmd, std::string& param, Client& cl, Server& server)
 {
