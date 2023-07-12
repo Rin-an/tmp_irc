@@ -6,7 +6,7 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:12:02 by zel-hach          #+#    #+#             */
-/*   Updated: 2023/07/07 16:41:38 by zel-hach         ###   ########.fr       */
+/*   Updated: 2023/07/09 13:39:22 by zel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,27 @@
 
 #include "User.hpp"
 #include "server.hpp"
+// #include "Channel.hpp"
 #include <poll.h>
 
 class Server;
 class User;
+// class Channel;
 class Client
 {
-	int	flag;
 	int pass;
 	std::string user_name;
 	std::string nickname;
-public:
-	int addrlen;
 	int i;
 	int len;
+public:
 	struct sockaddr_in hint;
-
+	int addrlen;
+	std::vector<User> users;
 	Client();
 	~Client();
-	Client(Client &);
-	Client &operator=(Client &);
+	// Client(Client &);
+	// Client &operator=(Client &);
 
 	int getPass();
 	std::string getUserName(void);
@@ -49,10 +50,10 @@ public:
 
 	std::vector<pollfd> connection_multi_client_srv(int serversocket, std::vector<pollfd> &readfds, Server &server);
 	void send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index, Server &server);
-	bool ckeck_command(std::string command);
+	// void 				invite_user(std::string,std::deque<Client>);
+	// bool ckeck_command(std::string command);
 };
 std::string to_upper(std::string &str);
 int nickname_exist(Server server, std::string parametre);
 void ft_strtrim(std::string &str);
-
 #endif
