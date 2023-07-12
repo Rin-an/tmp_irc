@@ -79,7 +79,7 @@ void    Channel::decUsernum(void)
 
 /*int Channel::topic_cmd(std:string param)
 {
-    (this->mode).find("t") == string::npos ? return (ERR_NOCHANMODES) : continue;
+    // (this->mode).find("t") == string::npos ? return (ERR_NOCHANMODES) : continue;
     std::stringstream   str(param);
     std::string         ch_n, t;
     std::getline(str, ch_n, ' ');

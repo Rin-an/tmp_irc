@@ -1,4 +1,9 @@
+
 #include "server.hpp"
+
+
+
+
 
 Server:: Server()
 {
@@ -9,7 +14,6 @@ Server:: ~Server()
 {
 
 }
-
 int Server::  create_socket(Server &server)
 {
 	int opt = 1; 

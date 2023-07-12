@@ -25,17 +25,13 @@ class Server{
 
 	public :
 		int socket_server;
-		// static int pass;
-		// std::vector<User *> arr_name;
-		// std::map<int , std::string>  arr_nickname;
-		std::map<int,Client *> client;
+		std::map<int,Client > client;
 		Server();
 		~Server();
+		Server(Server &);
+		Server &operator=(Server &);
 		int  create_socket(Server &server);
 		int bind_socket_to_port(Client &client, char *argv, int serversocket);
-		int	check_ch_name(std::string&);
-		int	check_ch_exist(std::string&);
-		// std::map<int , std::string> client_info;
 
 };
 

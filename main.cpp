@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/07 15:12:09 by zel-hach          #+#    #+#             */
+/*   Updated: 2023/07/07 15:12:09 by zel-hach         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "server.hpp"
 #include "client.hpp"
 #include "User.hpp"
@@ -12,7 +24,6 @@ int main(int argc, char *argv[])
     std::vector<pollfd> readfds(1);
     int new_size;
     Server server;
-    // User user;
     int serversocket;
     if (argc > 1)
     {
@@ -37,17 +48,9 @@ int main(int argc, char *argv[])
                     break;
                 }
                 if (readfds[index].fd == serversocket)
-                {
-                    std::cout << readfds[index].fd << std::endl;
-                    readfds = client.connection_multi_client_srv(serversocket, readfds, client, server);
-                    std::cout << readfds[index].fd << std::endl;
-                    
-                }
+                    readfds = client.connection_multi_client_srv(serversocket, readfds,server);
                 else
-                {
-                    server.client[readfds[index].fd]->send_recv_msg(readfds, argv[2], &index);
-                    
-                }
+                    server.client[readfds[index].fd].send_recv_msg(readfds, argv[2], &index,server);
             }
         }
     }
