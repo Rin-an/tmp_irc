@@ -6,7 +6,7 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:11:52 by zel-hach          #+#    #+#             */
-/*   Updated: 2023/07/12 19:54:25 by ssadiki          ###   ########.fr       */
+/*   Updated: 2023/07/13 13:13:23 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ int Client::getPass()
 	return (this->pass);
 }
 
-std::string Client::getUserName(void)
+const std::string Client::getUserName(void)
 {
 	return (this->user_name);
 }
 
-std::string Client::getNickName(void)
+const std::string Client::getNickName(void)
 {
 	return (this->nickname);
 }
@@ -139,7 +139,6 @@ void Client::send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index,
 		ft_strtrim(parametre);
 		command = to_upper(command);
 
-		std::cout << "Command : " << command << ", Params=" << parametre << "$" << std::endl;
 		if (command == "PASS")
 		{
 			if (parametre == "\0")
@@ -149,7 +148,7 @@ void Client::send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index,
 			else if (parametre == argv)
 				this->setPass(1);
 		}
-		std::cout << this->i << std::endl;
+	//	std::cout << this->i << std::endl;
 		if (command == "NICK" && this->getPass() == 1 && nickname_exist(server, parametre) == 0)
 		{
 			if (parametre.length() == 0)
@@ -159,7 +158,7 @@ void Client::send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index,
 			else
 			{
 				this->nickname = parametre;
-				std::cout << "nickname: " << this->nickname << std::endl;
+		//		std::cout << "nickname: " << this->nickname << std::endl;
 				this->i++;
 			}
 		}
@@ -195,10 +194,10 @@ void Client::send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index,
 			std::cout << "now you are connecte with nickname : " << this->nickname << std::endl;
 			this->flag = 1;
 		}
-		if (command == "NICK" && this->i > 1 && this->len == 1)
-			std::cout << "now you are change nickname with : " << this->nickname << std::endl;
-		if (this->flag)
-			parse_ch_cmd(command,parametre, server);
+		else if (command == "NICK" && this->i > 1 && this->len == 1)
+			std::cout << "You changed your nickname to : " << this->nickname << std::endl;
+		else if (command != "NICK" && this->flag)
+			parse_ch_cmd(command, parametre, server);
 	}
 }
 

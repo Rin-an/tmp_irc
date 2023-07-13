@@ -6,7 +6,7 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:12:02 by zel-hach          #+#    #+#             */
-/*   Updated: 2023/07/12 19:58:20 by ssadiki          ###   ########.fr       */
+/*   Updated: 2023/07/13 11:27:08 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "User.hpp"
 #include "server.hpp"
 #include "Channel.hpp"
-#include "command.hpp"
+#include "commands.hpp"
 #include <poll.h>
 
 class Server;
@@ -40,20 +40,16 @@ public:
 	Client &operator=(const Client &);
 
 	int getPass();
-	std::string getUserName(void);
-	std::string getNickName(void);
-
-
+	const std::string getUserName(void);
+	const std::string getNickName(void);
 
 	void setPass(int);
 	void setUserName(std::string);
 	void setNickName(std::string);
 
-
 	std::vector<pollfd> connection_multi_client_srv(int serversocket, std::vector<pollfd> &readfds, Server &server);
 	void send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index, Server &server);
 	void	parse_ch_cmd(std::string, std::string, Server&);
-	// void 				invite_user(std::string,std::deque<Client>);
 	// bool ckeck_command(std::string command);
 };
 

@@ -6,7 +6,7 @@
 /*   By: ssadiki <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 13:50:12 by ssadiki           #+#    #+#             */
-/*   Updated: 2023/07/12 20:03:23 by ssadiki          ###   ########.fr       */
+/*   Updated: 2023/07/13 10:03:50 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int f_index(std::string cmd)
     return (-1);
 }
 
-void    exec_ch_command(std::string& cmd, std::string& param, Client& cl, Server& server)
+void    exec_ch_command(std::string& cmd, std::string& param, Client& cl, Server& serv)
 {
     void    (*cmdsf[]) (std::string, Client&, Server&) = {&join_cmd, &mode_cmd, &invite_cmd, &topic_cmd, &kick_cmd};
 
@@ -49,7 +49,8 @@ void    exec_ch_command(std::string& cmd, std::string& param, Client& cl, Server
             std::cout << "how?" << std::endl;
     }
 }
-void	topic_cmd(std::string param, std::deque<std::string>::iterator u)
+
+void	topic_cmd(std::string param, Client& c, Server& s)
 {
 	/*(this->mode).find("t") == string::npos ? return (ERR_NOCHANMODES) : continue;
 	std::stringstream   str(param);
@@ -63,53 +64,36 @@ void	topic_cmd(std::string param, std::deque<std::string>::iterator u)
 	}
 	std::getline(str, t);*/
 	(void) param;
-	(void) u;
+	(void) c;
+	(void) s;
 
 	std::cout << "TOPIC command" << std::endl;
 }
 
-/*void    join_cmd(std::string param, std::deque<std::string>::iterator u)
+void    invite_cmd(std::string param, Client& c, Server& s)
 {
 	(void) param;
-	std::stringstream	ss(param);
-	std::cout << "User: " << *u << std::endl;
-	std::cout << "JOIN command" << std::endl;
-}*/
+	(void) c;
+	(void) s;
 
-void    invite_cmd(std::string param, std::deque<std::string>::iterator u)
-{
-	(void) param;
-	(void) u;
 
 	std::cout << "INVITE command" << std::endl;
 }
 
-void    user_cmd(std::string param, std::deque<std::string>& u)
+void    mode_cmd(std::string param, Client& c, Server& s)
 {
 	(void) param;
-	(void) u;
-
-	if (param.empty())
-	{
-		std::cout << "USER :Not enough parameters" << std::endl;
-		return ;
-	}
-	u.push_back(param);
-	std::cout << "USER command" << std::endl;
-}
-
-void    mode_cmd(std::string param, std::deque<std::string>::iterator u)
-{
-	(void) param;
-	(void) u;
+	(void) c;
+	(void) s;
 
 	std::cout << "MODE command" << std::endl;
 }
 
-/*void    kick_cmd(std::string param, std::deque<std::string>::iterator u)
+void    kick_cmd(std::string param, Client& c, Server& s)
 {
 	(void) param;
-	(void) u;
+	(void) c;
+	(void) s;
 
 	std::cout << "KICK command" << std::endl;
-}*/
+}

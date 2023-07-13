@@ -6,7 +6,7 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:12:09 by zel-hach          #+#    #+#             */
-/*   Updated: 2023/07/12 15:33:27 by ssadiki          ###   ########.fr       */
+/*   Updated: 2023/07/13 16:25:54 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,20 @@ int main(int argc, char *argv[])
                 else
                     server.client[readfds[index].fd].send_recv_msg(readfds, argv[2], &index,server);
             }
+			if (!g_chs.empty())
+			{
+			std::cout << "CHANNELS" << std::endl;
+			std::cout << "____________" << std::endl;
+			for (std::deque<Channel>::iterator it = g_chs.begin(); it != g_chs.end(); it++)
+			{
+					std::cout << (*it).getName()  << std::endl;
+					std::cout << "////////////////" << std::endl;
+					for (std::deque<Client*>::iterator it2 = (*it).users.begin(); it2 != (*it).users.end(); it2++)
+						std::cout << (*it2)->getNickName() << std::endl;
+					std::cout << "///////////////" << std::endl << std::endl;
+			}
         }
+			}
     }
     return 0;
 }

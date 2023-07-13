@@ -6,7 +6,7 @@
 /*   By: ssadiki <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 13:49:29 by ssadiki           #+#    #+#             */
-/*   Updated: 2023/07/12 13:49:31 by ssadiki          ###   ########.fr       */
+/*   Updated: 2023/07/13 16:25:32 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,17 @@
 
 extern std::deque<Channel> g_chs;
 
-void	split_param(std::string param, std::vector<std::string> &ch_list,
-		std::vector<std::string> &key_list) { std::stringstream	ss(param);
+void	split_param(std::string param, std::vector<std::string> &ch_list, std::vector<std::string> &key_list)
+{
+   	std::stringstream	ss(param);
 	std::string		chs; std::string		keys;
 
 	getline(ss, chs, ' '); getline(ss, keys); std::stringstream	ss_ch(chs);
 	std::stringstream	ss_key(keys);
 
-	while(!ss_ch.eof()) { std::string	ch;
+	while(!ss_ch.eof())
+   	{
+	   	std::string	ch;
 		getline(ss_ch, ch, ',');
 		ch_list.push_back(ch);
 	}
@@ -61,11 +64,9 @@ int	find_ch(std::string ch)
 	return (-1);
 }
 
-int	check_modes(int i, std::deque<std::string>::iterator u)
+int	check_modes(Channel ch, Client& c)
 {
-	Channel ch = g_chs[i];
-
-	if ((ch.getMode()).find('i') != std::string::npos && find(ch.invite.begin(), ch.invite.end(), *u) == ch.invite.end())
+	if ((ch.getMode()).find('i') != std::string::npos && find(ch.invite.begin(), ch.invite.end(), &c) == ch.invite.end())
 		//ERR_INVITEONLYCHAN 473
 		throw (ch.getName() + " :Cannot join channel (+i)");
 	if ((ch.getMode()).find('l') != std::string::npos && ch.getUsernum() == ch.getLimit()) 
@@ -76,20 +77,21 @@ int	check_modes(int i, std::deque<std::string>::iterator u)
 	return (0);
 }
 
-void	add_user(std::string ch, std::vector<std::string>& key_list, int i, std::deque<std::string>::iterator u)
+void	add_user(std::string ch, std::vector<std::string>& key_list, int i, Client& c, Server& s)
 {
 	int	ch_i = find_ch(ch);
+	(void) s;
 
-	try{
-		if (find(g_chs[ch_i].users.begin(), g_chs[ch_i].users.end(), *u) != g_chs[ch_i].users.end())
+	try {
+		if (find(g_chs[ch_i].users.begin(), g_chs[ch_i].users.end(), &c) != g_chs[ch_i].users.end())
 			return ;
-		int k = check_modes(ch_i, u);
-		std::deque<std::string>	invite = g_chs[ch_i].invite;
-		if (find(invite.begin(), invite.end(), *u) == invite.end())
+		int k = check_modes(g_chs[ch_i], c);
+		std::deque<Client*>	invite = g_chs[ch_i].invite;
+		if (find(invite.begin(), invite.end(), &c) == invite.end())
 			if (k && key_list[i] != g_chs[ch_i].getKey())
 				//ERR_BADCHANNELKEY 475
 				throw (ch + " :Cannot join channel (+k)");
-		g_chs[ch_i].users.push_back(*u);
+		g_chs[ch_i].users.push_back(&c);
 		g_chs[ch_i].incUsernum();
 	}
 	catch (const char* str)
@@ -102,24 +104,24 @@ void	add_user(std::string ch, std::vector<std::string>& key_list, int i, std::de
 	}
 }
 
-void	create_ch(std::string ch, std::deque<std::string>::iterator u)
+void	create_ch(std::string ch, Client& c)
 {
 	Channel	n_ch(ch);
 
-	n_ch.users.push_back(*u);
-	n_ch.op.push_back(*u);
+	n_ch.users.push_back(&c);
+	n_ch.op.push_back(&c);
 	n_ch.incUsernum();
 	g_chs.push_back(n_ch);
 }
 
-void	quit_all(std::deque<std::string>::iterator u)
+void	quit_all(Client& c)
 {
 	for (std::deque<Channel>::iterator it = g_chs.begin(); it != g_chs.end(); it++)
 	{
-		std::deque<std::string>&	users = (*it).users;
-		for (std::deque<std::string>::iterator it2 = users.begin(); it2 != users.end(); it2++)
+		std::deque<Client*>&	users = (*it).users;
+		for (std::deque<Client*>::iterator it2 = users.begin(); it2 != users.end(); it2++)
 		{
-			if (*it2 == *u)
+			if (*it2 == &c)
 			{
 				users.erase(it2);
 				(*it).decUsernum();
@@ -128,17 +130,17 @@ void	quit_all(std::deque<std::string>::iterator u)
 	}
 }
 
-int	join_ch(std::vector<std::string>& ch_list, std::vector<std::string>& key_list, std::deque<std::string>::iterator u)
+int	join_ch(std::vector<std::string>& ch_list, std::vector<std::string>& key_list, Client& c, Server& s)
 {
 	for (unsigned long i = 0; i < ch_list.size(); i++)
 	{
 		try{
 			if (ch_list[i] == "0")
-				quit_all(u);
+				quit_all(c);
 			else if (!g_chs.empty() && find_ch(ch_list[i]) >= 0)
-				add_user(ch_list[i], key_list, i, u);
+				add_user(ch_list[i], key_list, i, c, s);
 			else
-				create_ch(ch_list[i], u);
+				create_ch(ch_list[i], c);
 		}
 		catch (std::exception& e)
 		{
@@ -156,7 +158,7 @@ int	join_ch(std::vector<std::string>& ch_list, std::vector<std::string>& key_lis
 	return (0);
 }
 
-void	join_cmd(std::string param, std::deque<std::string>::iterator u)
+void	join_cmd(std::string param, Client& c, Server& s)
 {
 	std::vector<std::string>	ch_list;
 	std::vector<std::string>	key_list;
@@ -171,6 +173,6 @@ void	join_cmd(std::string param, std::deque<std::string>::iterator u)
 	}
 	if (valid_ch(ch_list) < 0)
 		return ;
-	if (join_ch(ch_list, key_list, u) < 0)
+	if (join_ch(ch_list, key_list, c, s) < 0)
 		return ;
 }

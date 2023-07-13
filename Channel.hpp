@@ -6,7 +6,7 @@
 /*   By: ssadiki <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 13:50:01 by ssadiki           #+#    #+#             */
-/*   Updated: 2023/07/12 13:50:02 by ssadiki          ###   ########.fr       */
+/*   Updated: 2023/07/13 11:17:05 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #define CHANNEL_MODS "klito"
 #include "client.hpp"
 #include <deque>
+#include <algorithm>
 
 class Server;
 class Client;
@@ -27,11 +28,9 @@ class Channel{
 	std::string topic;
 	std::string mode;
 	public:
-		//std::deque<Client *> op;
-		//std::deque<Client *> users;
-		std::deque<std::string> op;
-		std::deque<std::string>	invite;
-		std::deque<std::string> users;
+		std::deque<Client *> op;
+		std::deque<Client *> invite;
+		std::deque<Client *> users;
 		Channel();
 		Channel(const std::string&);
 		~Channel();
