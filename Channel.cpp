@@ -1,10 +1,12 @@
 #include "Channel.hpp"
 
-Channel::Channel(){}
-
-Channel::Channel(const std::string& n):name(n), topic(""), mode("")
+Channel::Channel()
 {
+	usernum = 0;
+}
 
+Channel::Channel(const std::string& n):name(n), usernum(0), topic(""), mode("")
+{
 }
 
 Channel::~Channel() {}
@@ -23,6 +25,22 @@ const std::string&  Channel::getMode(void) const
 {
     return (this->mode);
 }
+
+const std::string&  Channel::getKey(void) const
+{
+    return (this->key);
+}
+
+int  Channel::getLimit(void) const
+{
+    return (this->limit);
+}
+
+int  Channel::getUsernum(void) const
+{
+    return (this->usernum);
+}
+
 
 void    Channel::setName(std::string& n)
 {
@@ -44,7 +62,22 @@ void    Channel::setKey(std::string& k)
     this->key = k;
 }
 
-int Channel::topic_cmd(std:string param)
+void    Channel::setLimit(int l)
+{
+    this->limit = l;
+}
+
+void    Channel::incUsernum(void)
+{
+    (this->usernum)++;
+}
+
+void    Channel::decUsernum(void)
+{
+    (this->usernum)--;
+}
+
+/*int Channel::topic_cmd(std:string param)
 {
     // (this->mode).find("t") == string::npos ? return (ERR_NOCHANMODES) : continue;
     std::stringstream   str(param);
@@ -57,4 +90,4 @@ int Channel::topic_cmd(std:string param)
         return ;
     }
     std::getline(str, t);
-}
+}*/

@@ -6,7 +6,7 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:12:02 by zel-hach          #+#    #+#             */
-/*   Updated: 2023/07/09 13:39:22 by zel-hach         ###   ########.fr       */
+/*   Updated: 2023/07/13 10:00:55 by zel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ public:
 	void send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index, Server &server);
 	// void 				invite_user(std::string,std::deque<Client>);
 	// bool ckeck_command(std::string command);
+	void cmd_topic(std::string channel, std::string topic, Server &server)
 };
 std::string to_upper(std::string &str);
 int nickname_exist(Server server, std::string parametre);

@@ -6,7 +6,7 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:11:52 by zel-hach          #+#    #+#             */
-/*   Updated: 2023/07/12 14:47:59 by zel-hach         ###   ########.fr       */
+/*   Updated: 2023/07/12 19:21:49 by zel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void Client::send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index,
 
         if (command == "PASS")
         {
-            if (parametre == "\0")
+            if (parametre.empty())
                 std::cout << "ERR_NEEDMOREPARAMS\n";
             else if (this->getPass() == 1)
                 std::cout << "ERR_ALREADYREGISTRED\n";
@@ -142,7 +142,6 @@ void Client::send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index,
                 this->nickname = parametre;
                 this->i++;
             }
-            
         }
         if (command == "USER" && this->getPass() == 1 && parametre.length() != 0)
         {
@@ -177,12 +176,11 @@ void Client::send_recv_msg(std::vector<pollfd> &readfds, char *argv, int *index,
             std::cout << "now you are change nickname with : " << this->nickname << std::endl;
     }
 }
-
 // void 	Client::invite_user(std::string nickname,Server &server,std::string channel)
 // {
-// std::deque<Client *> it = find(server.chs->begin(),server.chs->end(),channel);
-// std::deque<Client *> it_user = find(server.chs.users->begin(),server.chs.users->end(),this->getNickName());
-// std::deque<Client *> it_user_chs = find(server.chs.users->begin(),server.chs.users->end(),nickname);
+// std::deque<Channel *>::iterator it = find(server.chs.begin(),server.chs.end(),channel);
+// std::deque<Client *>::iterator it_user = find(server.chs.users.begin(),server.chs.users.end(),this->getNickName());
+// std::deque<Client *>::iterator it_user_chs = find(server.chs.users.begin(),server.chs.users.end(),nickname);
 
 // if (it != server.chs->end() && nickname_add_to_chs(server, nickname) == 1)
 // RPL_INVITING;

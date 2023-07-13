@@ -26,10 +26,11 @@ class Server{
 	public :
 		int socket_server;
 		std::map<int,Client > client;
+		std::deque<Channel>  chs;
 		Server();
 		~Server();
-		Server(Server &);
-		Server &operator=(Server &);
+		// Server(Server &);
+		// Server &operator=(Server &);
 		int  create_socket(Server &server);
 		int bind_socket_to_port(Client &client, char *argv, int serversocket);
 

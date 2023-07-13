@@ -8,4 +8,6 @@ void	mode_cmd(std::string, std::deque<std::string>::iterator);
 void	join_cmd(std::string, std::deque<std::string>::iterator);
 void	kick_cmd(std::string, std::deque<std::string>::iterator);
 void	user_cmd(std::string, std::deque<std::string>&);
+int		valid_ch(std::vector<std::string>&);
+int		find_ch(std::string);
 #endif

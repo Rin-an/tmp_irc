@@ -42,9 +42,9 @@ void    user_cmd(std::string param, std::deque<std::string>& u)
 
 	if (param.empty())
 	{
-		std::cout << "Enter a username." << std::endl;
+		std::cout << "USER :Not enough parameters" << std::endl;
 		return ;
-	}	
+	}
 	u.push_back(param);
 	std::cout << "USER command" << std::endl;
 }
@@ -57,10 +57,10 @@ void    mode_cmd(std::string param, std::deque<std::string>::iterator u)
 	std::cout << "MODE command" << std::endl;
 }
 
-void    kick_cmd(std::string param, std::deque<std::string>::iterator u)
+/*void    kick_cmd(std::string param, std::deque<std::string>::iterator u)
 {
 	(void) param;
 	(void) u;
 
 	std::cout << "KICK command" << std::endl;
-}
+}*/
