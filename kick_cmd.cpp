@@ -6,14 +6,11 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 13:49:50 by ssadiki           #+#    #+#             */
-/*   Updated: 2023/07/13 19:48:36 by zel-hach         ###   ########.fr       */
+/*   Updated: 2023/07/14 13:47:00 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.hpp"
-
-extern   std::deque<Channel>	g_chs;
-
 
 void    split_param(std::string param, std::vector<std::string> &ch_list, std::vector<std::string> &user_list, std::string& cmt)
 {
@@ -40,37 +37,49 @@ void    split_param(std::string param, std::vector<std::string> &ch_list, std::v
     }
 }
 
-void	kick_user(std::vector<std::string> ch_list, std::vector<std::string> users, std::deque<std::string>::iterator u)
+Client*	getClient(std::string	user, Server& s)
+{
+	for (std::map<int, Client>::iterator it = s.client.begin(); it != s.client.end(); it++)
+	{
+		if (it->second.getNickName() == user)
+			return &(it->second);
+	}
+	return (NULL);
+}
+
+void	kick_user(std::vector<std::string> ch_list, std::vector<std::string> users, Client& c, Server& s)
 {
 	for (size_t i = 0; i < ch_list.size(); i++)
 	{
-		int	ch_i = find_ch(ch_list[i]);
+		int	ch_i = find_ch(ch_list[i], s);
+		Client*	dest = getClient(users[i], s);
+
 		if (ch_i < 0)
 		{
 			//ERR_NOSUCHCHANNEL 403
 			std::cout << ch_list[i] << " :No such channel" << std::endl;
 			return ;
 		}
-		Channel	*ch = &g_chs[ch_i];
-		if (find(ch->users.begin(), ch->users.end(), *u) == ch->users.end())
+		Channel	*ch = s.chs[ch_i];
+		if (find(ch->users.begin(), ch->users.end(), &c) == ch->users.end())
 		{
 			//ERR_NOTONCHANNEL 442
 			std::cout << ch_list[i] << " :You're not on that channel" << std::endl;
 			return ;
 		}
-		if (find(ch->op.begin(), ch->op.end(), *u) == ch->op.end())
+		if (find(ch->op.begin(), ch->op.end(), &c) == ch->op.end())
 		{
 			//ERR_CHANOPRIVSNEEDED 482
 			std::cout << ch_list[i] << " :You're not channel operator" << std::endl;
 			return ;
 		}
-		if (find(ch->users.begin(), ch->users.end(), users[i]) == ch->users.end())
+		if (find(ch->users.begin(), ch->users.end(), dest) == ch->users.end())
 		{
 			//ERR_USERNOTINCHANNEL 441
 			std::cout << users[i] << " " << ch_list[i] << " :They aren't on that channel" << std::endl;
 			return ;
 		}
-		ch->users.erase(find(ch->users.begin(), ch->users.end(), users[i]));
+		ch->users.erase(find(ch->users.begin(), ch->users.end(), dest));
 	}
 }
 
@@ -89,5 +98,5 @@ void	kick_cmd(std::string param, Client& c, Server& s)
 	}
 	if (valid_ch(ch_list) < 0)
 		return ;
-	kick_user(ch_list, user_list, u);
+	kick_user(ch_list, user_list, c, s);
 }

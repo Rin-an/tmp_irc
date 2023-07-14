@@ -6,7 +6,7 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 13:50:12 by ssadiki           #+#    #+#             */
-/*   Updated: 2023/07/14 09:16:07 by zel-hach         ###   ########.fr       */
+/*   Updated: 2023/07/14 13:47:53 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,20 @@ void    invite_cmd(std::string param, Client& c, Server& s)
 	std::cout << "INVITE command" << std::endl;
 }
 
-// void    mode_cmd(std::string param, Client& c, Server& s)
-// {
-// 	(void) param;
-// 	(void) c;
-// 	(void) s;
+void    mode_cmd(std::string param, Client& c, Server& s)
+{
+	(void) param;
+	(void) c;
+ 	(void) s;
 
-// 	std::cout << "MODE command" << std::endl;
-// }
+	std::cout << "MODE command" << std::endl;
+}
 
-void    kick_cmd(std::string param, Client& c, Server& s)
+/*void    kick_cmd(std::string param, Client& c, Server& s)
 {
 	(void) param;
 	(void) c;
 	(void) s;
 
 	std::cout << "KICK command" << std::endl;
-}
+}*/

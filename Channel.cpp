@@ -6,7 +6,7 @@
 /*   By: ssadiki <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 13:49:57 by ssadiki           #+#    #+#             */
-/*   Updated: 2023/07/13 16:25:13 by ssadiki          ###   ########.fr       */
+/*   Updated: 2023/07/14 14:25:50 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,10 @@ void    Channel::setTopic(std::string& t)
     this->topic = t;
 }
 
-void    Channel::setMode(std::string& m)
+void    Channel::setMode(char m)
 {
-    this->mode = m;
+	this->mode.push_back(m);
+//    this->mode = m;
 }
 
 void    Channel::setKey(std::string& k)

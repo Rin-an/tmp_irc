@@ -6,7 +6,7 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 13:50:01 by ssadiki           #+#    #+#             */
-/*   Updated: 2023/07/14 13:20:43 by zel-hach         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:26:02 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ class Channel{
 		int			getUsernum(void) const;
 		void				setName(std::string&);
 		void				setTopic(std::string&);
-		void				setMode(std::string&);
+		void				setMode(char);
 		void				setKey(std::string&);
 		void				setLimit(int);
 		void				incUsernum(void);
