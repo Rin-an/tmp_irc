@@ -1,13 +1,24 @@
 
 #include "server.hpp"
 
-
-
-
+Server::Server(Server& s)
+{
+	*this = s;
+}
 
 Server:: Server()
 {
 
+}
+
+Server&	Server::operator=(Server& s)
+{
+	if (this != &s)
+	{
+		this->socket_server = s.socket_server;
+		this->client = s.client;
+	}
+	return (*this);
 }
 
 Server:: ~Server()

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   kick_cmd.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/12 13:49:50 by ssadiki           #+#    #+#             */
+/*   Updated: 2023/07/13 19:48:36 by zel-hach         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "commands.hpp"
 
 extern   std::deque<Channel>	g_chs;
@@ -62,7 +74,7 @@ void	kick_user(std::vector<std::string> ch_list, std::vector<std::string> users,
 	}
 }
 
-void	kick_cmd(std::string param, std::deque<std::string>::iterator u)
+void	kick_cmd(std::string param, Client& c, Server& s)
 {
 	std::vector<std::string>	ch_list;
 	std::vector<std::string>	user_list;

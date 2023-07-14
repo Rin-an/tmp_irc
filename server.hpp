@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/13 16:36:01 by zel-hach          #+#    #+#             */
+/*   Updated: 2023/07/13 16:56:26 by zel-hach         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
@@ -12,12 +24,12 @@
 #include <unistd.h>
 #include <sstream>
 #include <map>
+#include <deque>
 #include <vector>
 #include "client.hpp"
 #include "User.hpp"
 #include "Channel.hpp"
 
-class Server;
 class User;
 class Client;
 class Channel;
@@ -26,11 +38,11 @@ class Server{
 	public :
 		int socket_server;
 		std::map<int,Client > client;
-		std::deque<Channel>  chs;
+		std::deque<Channel *>  chs;
 		Server();
 		~Server();
-		// Server(Server &);
-		// Server &operator=(Server &);
+		Server(Server &);
+		Server &operator=(Server &);
 		int  create_socket(Server &server);
 		int bind_socket_to_port(Client &client, char *argv, int serversocket);
 

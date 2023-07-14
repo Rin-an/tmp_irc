@@ -1,21 +1,28 @@
-#include "commands.hpp"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   join_cmd.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/12 13:49:29 by ssadiki           #+#    #+#             */
+/*   Updated: 2023/07/13 17:28:32 by zel-hach         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-extern std::deque<Channel> g_chs;
+#include "commands.hpp"
 
 void	split_param(std::string param, std::vector<std::string> &ch_list, std::vector<std::string> &key_list)
 {
-	std::stringstream	ss(param);
-	std::string		chs;
-	std::string		keys;
+   	std::stringstream	ss(param);
+	std::string		chs; std::string		keys;
 
-	getline(ss, chs, ' ');
-	getline(ss, keys);
-	std::stringstream	ss_ch(chs);
+	getline(ss, chs, ' '); getline(ss, keys); std::stringstream	ss_ch(chs);
 	std::stringstream	ss_key(keys);
 
 	while(!ss_ch.eof())
-	{
-		std::string	ch;
+   	{
+	   	std::string	ch;
 		getline(ss_ch, ch, ',');
 		ch_list.push_back(ch);
 	}
@@ -43,11 +50,11 @@ int	valid_ch(std::vector<std::string>& ch_list)
 	return (0);
 }
 
-int	find_ch(std::string ch)
+int	find_ch(std::string ch, Server& s)
 {
-	for (unsigned long i = 0; i < g_chs.size(); i++)
+	for (unsigned long i = 0; i < s.chs.size(); i++)
 	{
-		if (g_chs[i].getName() == ch)
+		if (s.chs[i]->getName() == ch)
 		{
 			return (i);
 		}
@@ -55,11 +62,9 @@ int	find_ch(std::string ch)
 	return (-1);
 }
 
-int	check_modes(int i, std::deque<std::string>::iterator u)
+int	check_modes(Channel ch, Client& c)
 {
-	Channel ch = g_chs[i];
-
-	if ((ch.getMode()).find('i') != std::string::npos && find(ch.invite.begin(), ch.invite.end(), *u) == ch.invite.end())
+	if ((ch.getMode()).find('i') != std::string::npos && find(ch.invite.begin(), ch.invite.end(), &c) == ch.invite.end())
 		//ERR_INVITEONLYCHAN 473
 		throw (ch.getName() + " :Cannot join channel (+i)");
 	if ((ch.getMode()).find('l') != std::string::npos && ch.getUsernum() == ch.getLimit()) 
@@ -70,21 +75,22 @@ int	check_modes(int i, std::deque<std::string>::iterator u)
 	return (0);
 }
 
-void	add_user(std::string ch, std::vector<std::string>& key_list, int i, std::deque<std::string>::iterator u)
+void	add_user(std::string ch, std::vector<std::string>& key_list, int i, Client& c, Server& s)
 {
-	int	ch_i = find_ch(ch);
+	int	ch_i = find_ch(ch,s);
+	(void) s;
 
-	try{
-		if (find(g_chs[ch_i].users.begin(), g_chs[ch_i].users.end(), *u) != g_chs[ch_i].users.end())
+	try {
+		if (find(s.chs[ch_i]->users.begin(), s.chs[ch_i]->users.end(), &c) != s.chs[ch_i]->users.end())
 			return ;
-		int k = check_modes(ch_i, u);
-		std::deque<std::string>	invite = g_chs[ch_i].invite;
-		if (find(invite.begin(), invite.end(), *u) == invite.end())
-			if (k && key_list[i] != g_chs[ch_i].getKey())
+		int k = check_modes(*s.chs[ch_i], c);
+		std::deque<Client*>	invite = s.chs[ch_i]->invite;
+		if (find(invite.begin(), invite.end(), &c) == invite.end())
+			if (k && key_list[i] != s.chs[ch_i]->getKey())
 				//ERR_BADCHANNELKEY 475
 				throw (ch + " :Cannot join channel (+k)");
-		g_chs[ch_i].users.push_back(*u);
-		g_chs[ch_i].incUsernum();
+		s.chs[ch_i]->users.push_back(&c);
+		s.chs[ch_i]->incUsernum();
 	}
 	catch (const char* str)
 	{
@@ -96,43 +102,46 @@ void	add_user(std::string ch, std::vector<std::string>& key_list, int i, std::de
 	}
 }
 
-void	create_ch(std::string ch, std::deque<std::string>::iterator u)
+void	create_ch(std::string ch, Client& c, Server &s)
 {
-	Channel	n_ch(ch);
+	Channel	*n_ch = new Channel(ch);
 
-	n_ch.users.push_back(*u);
-	n_ch.op.push_back(*u);
-	n_ch.incUsernum();
-	g_chs.push_back(n_ch);
+	n_ch->users.push_back(&c);
+	n_ch->op.push_back(&c);
+	n_ch->incUsernum();
+	s.chs.push_back(n_ch);
 }
 
-void	quit_all(std::deque<std::string>::iterator u)
+void	quit_all(Client& c, Server &s)
 {
-	for (std::deque<Channel>::iterator it = g_chs.begin(); it != g_chs.end(); it++)
+	for (std::deque<Channel *>::iterator it = s.chs.begin(); it != s.chs.end(); it++)
 	{
-		std::deque<std::string>&	users = (*it).users;
-		for (std::deque<std::string>::iterator it2 = users.begin(); it2 != users.end(); it2++)
+		std::deque<Client*>&	users = (*it)->users;
+		for (std::deque<Client*>::iterator it2 = users.begin(); it2 != users.end(); it2++)
 		{
-			if (*it2 == *u)
+			if (*it2 == &c)
 			{
 				users.erase(it2);
-				(*it).decUsernum();
+				(*it)->decUsernum();
 			}
 		}
 	}
 }
 
-int	join_ch(std::vector<std::string>& ch_list, std::vector<std::string>& key_list, std::deque<std::string>::iterator u)
+int	join_ch(std::vector<std::string>& ch_list, std::vector<std::string>& key_list, Client& c, Server& s)
 {
 	for (unsigned long i = 0; i < ch_list.size(); i++)
 	{
 		try{
 			if (ch_list[i] == "0")
-				quit_all(u);
-			else if (!g_chs.empty() && find_ch(ch_list[i]) >= 0)
-				add_user(ch_list[i], key_list, i, u);
+				quit_all(c,s);
+			else if (!s.chs.empty() && find_ch(ch_list[i],s) >= 0)
+				add_user(ch_list[i], key_list, i, c, s);
 			else
-				create_ch(ch_list[i], u);
+			{
+				create_ch(ch_list[i], c, s);
+				std::cout << s.chs[0]->getName() << std::endl;
+			}
 		}
 		catch (std::exception& e)
 		{
@@ -150,7 +159,7 @@ int	join_ch(std::vector<std::string>& ch_list, std::vector<std::string>& key_lis
 	return (0);
 }
 
-void	join_cmd(std::string param, std::deque<std::string>::iterator u)
+void	join_cmd(std::string param, Client& c, Server& s)
 {
 	std::vector<std::string>	ch_list;
 	std::vector<std::string>	key_list;
@@ -165,6 +174,6 @@ void	join_cmd(std::string param, std::deque<std::string>::iterator u)
 	}
 	if (valid_ch(ch_list) < 0)
 		return ;
-	if (join_ch(ch_list, key_list, u) < 0)
+	if (join_ch(ch_list, key_list, c, s) < 0)
 		return ;
 }

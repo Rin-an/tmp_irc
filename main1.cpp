@@ -1,6 +1,6 @@
 #include "commands.hpp"
 
-std::deque<Channel>	g_chs;
+//std::deque<Channel>	g_chs;
 
 int	f_index(std::string cmd)
 {
