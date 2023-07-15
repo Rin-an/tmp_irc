@@ -6,7 +6,7 @@
 /*   By: ssadiki <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 13:49:57 by ssadiki           #+#    #+#             */
-/*   Updated: 2023/07/14 14:25:50 by ssadiki          ###   ########.fr       */
+/*   Updated: 2023/07/15 17:12:03 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ Channel::Channel()
 	usernum = 0;
 }
 
-Channel::Channel(const std::string& n):name(n), usernum(0), topic(""), mode("")
+Channel::Channel(const std::string& n):name(n), usernum(0), topic(""), mode("ik")
 {
+	key = "password";
 }
 
 Channel::~Channel() {}

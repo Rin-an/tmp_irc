@@ -6,7 +6,7 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 13:50:12 by ssadiki           #+#    #+#             */
-/*   Updated: 2023/07/14 13:47:53 by ssadiki          ###   ########.fr       */
+/*   Updated: 2023/07/15 17:00:23 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ void    exec_ch_command(std::string& cmd, std::string& param, Client& cl, Server
             cmdsf[4](param, cl, serv);
             break;
         default:
-            std::cout << "how?" << std::endl;
+            std::cout << "Couldn't find command." << std::endl;
     }
 }
 
-void    invite_cmd(std::string param, Client& c, Server& s)
+/*void    invite_cmd(std::string param, Client& c, Server& s)
 {
 	(void) param;
 	(void) c;
@@ -58,7 +58,7 @@ void    invite_cmd(std::string param, Client& c, Server& s)
 
 
 	std::cout << "INVITE command" << std::endl;
-}
+}*/
 
 void    mode_cmd(std::string param, Client& c, Server& s)
 {

@@ -6,7 +6,7 @@
 /*   By: zel-hach <zel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 13:49:29 by ssadiki           #+#    #+#             */
-/*   Updated: 2023/07/13 17:28:32 by zel-hach         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:46:30 by ssadiki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,14 @@ int	valid_ch(std::vector<std::string>& ch_list)
 			//ERR_NOSUCHCHANNEL 403
 			std::cout << ch << " :No such channel" << std::endl;
 			return (-1);
+		}
+		for (size_t i = 0; i < ch.size(); i++)
+		{
+			if (ch[i] == ' ' || ch[i] == ',' || ch[i] == 7 || ch[i] == ':')
+			{
+				std::cout << ch << " :No such channel" << std::endl;
+				return (-1);
+			}
 		}
 	}
 	return (0);
